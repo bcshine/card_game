@@ -741,192 +741,77 @@ function downloadCouponImage(couponIndex) {
     createSimpleCouponImage(coupon);
 }
 
-// 기쁘고 즐거운 쿠폰 이미지 생성
+// 극도로 간단한 텍스트만 있는 쿠폰 이미지 생성
 function createSimpleCouponImage(coupon) {
-    console.log('=== 쿠폰 이미지 생성 시작 ===');
-    console.log('입력된 쿠폰 데이터:', coupon);
+    console.log('=== 텍스트 전용 쿠폰 이미지 생성 시작 ===');
     
     try {
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
         
         if (!ctx) {
-            throw new Error('Canvas 2D 컨텍스트를 생성할 수 없습니다.');
+            throw new Error('Canvas를 생성할 수 없습니다.');
         }
         
-        // 캔버스 크기 설정 (더 크게)
-        canvas.width = 500;
-        canvas.height = 280;
-        console.log('캔버스 크기 설정 완료:', canvas.width, 'x', canvas.height);
+        // 캔버스 크기 (더 작게)
+        canvas.width = 280;
+        canvas.height = 120;
         
-        // 화려한 그라데이션 배경
-        const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-        gradient.addColorStop(0, '#FF6B6B');    // 밝은 빨강
-        gradient.addColorStop(0.3, '#4ECDC4');  // 청록색
-        gradient.addColorStop(0.6, '#45B7D1');  // 하늘색
-        gradient.addColorStop(1, '#96CEB4');    // 민트색
-        
-        ctx.fillStyle = gradient;
+        // 흰색 배경
+        ctx.fillStyle = '#ffffff';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         
-        // 반투명 흰색 오버레이 (가독성 향상)
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.85)';
-        ctx.fillRect(15, 15, canvas.width - 30, canvas.height - 30);
-        
-        // 화려한 테두리 (무지개색)
-        const borderColors = ['#FF6B6B', '#FFE66D', '#4ECDC4', '#45B7D1', '#A8E6CF', '#FF8B94'];
-        for (let i = 0; i < 6; i++) {
-            ctx.strokeStyle = borderColors[i];
-            ctx.lineWidth = 3;
-            ctx.strokeRect(15 + i, 15 + i, canvas.width - 30 - (i * 2), canvas.height - 30 - (i * 2));
-        }
-        
-        // 장식용 별 그리기
-        drawStar(ctx, 60, 60, 5, 15, 8, '#FFD700');
-        drawStar(ctx, canvas.width - 60, 60, 5, 12, 6, '#FF69B4');
-        drawStar(ctx, 60, canvas.height - 60, 5, 10, 5, '#00CED1');
-        drawStar(ctx, canvas.width - 60, canvas.height - 60, 5, 13, 7, '#32CD32');
+        // 얇은 검은색 테두리
+        ctx.strokeStyle = '#000000';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(2, 2, canvas.width - 4, canvas.height - 4);
         
         // 텍스트 설정
-        ctx.textAlign = 'center';
+        ctx.fillStyle = '#000000';
+        ctx.textAlign = 'left';
         
-        // 축하 메시지
-        ctx.font = 'bold 16px Arial';
-        ctx.fillStyle = '#FF1493';
-        ctx.fillText('🎉 축하합니다! 🎉', canvas.width / 2, 45);
-        
-        // 제목 (더 크고 화려하게)
-        ctx.font = 'bold 32px Arial';
-        const titleGradient = ctx.createLinearGradient(0, 60, canvas.width, 60);
-        titleGradient.addColorStop(0, '#FF6B6B');
-        titleGradient.addColorStop(0.5, '#4ECDC4');
-        titleGradient.addColorStop(1, '#45B7D1');
-        ctx.fillStyle = titleGradient;
-        
-        const titleText = (coupon.prize || '쿠폰') + ' 쿠폰';
-        ctx.fillText(titleText, canvas.width / 2, 80);
-        
-        // 제목 그림자 효과
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
-        ctx.fillText(titleText, canvas.width / 2 + 2, 82);
-        
-        console.log('제목 텍스트 그리기 완료:', titleText);
-        
-        // 쿠폰 코드 박스 (화려한 디자인)
-        const codeBoxGradient = ctx.createLinearGradient(0, 110, canvas.width, 150);
-        codeBoxGradient.addColorStop(0, '#FFE66D');
-        codeBoxGradient.addColorStop(1, '#FF8B94');
-        
-        ctx.fillStyle = codeBoxGradient;
-        ctx.fillRect(80, 110, canvas.width - 160, 40);
-        
-        // 코드 박스 테두리
-        ctx.strokeStyle = '#FF1493';
-        ctx.lineWidth = 3;
-        ctx.strokeRect(80, 110, canvas.width - 160, 40);
-        
-        // 쿠폰 코드 텍스트
-        ctx.font = 'bold 24px monospace';
-        ctx.fillStyle = '#FFFFFF';
-        const codeText = coupon.code || 'NO-CODE';
-        ctx.fillText(codeText, canvas.width / 2, 135);
-        
-        // 코드 텍스트 그림자
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
-        ctx.fillText(codeText, canvas.width / 2 + 1, 136);
-        
-        console.log('쿠폰 코드 그리기 완료:', codeText);
-        
-        // 유효기간 (밝은 색상)
-        ctx.font = 'bold 16px Arial';
-        ctx.fillStyle = '#FF6B6B';
-        const expiryText = '📅 유효기간: ' + (coupon.expiryDate || '미정');
-        ctx.fillText(expiryText, canvas.width / 2, 180);
-        
-        // 사용법 (친근한 톤)
-        ctx.font = '14px Arial';
-        ctx.fillStyle = '#4ECDC4';
-        const usageText = coupon.usage || '쿠폰을 제시해주세요';
-        ctx.fillText('💡 ' + usageText, canvas.width / 2, 205);
-        
-        // 하단 장식 메시지
-        ctx.font = 'bold 14px Arial';
-        ctx.fillStyle = '#45B7D1';
-        ctx.fillText('🎁 고객님께 드리는 특별한 혜택입니다 🎁', canvas.width / 2, 235);
-        
-        // 감사 메시지
+        // 제목 (더 작게)
         ctx.font = '12px Arial';
-        ctx.fillStyle = '#96CEB4';
-        ctx.fillText('이용해 주셔서 감사합니다! ❤️', canvas.width / 2, 255);
+        ctx.fillText('축하합니다! 쿠폰을 받으셨습니다.', 8, 20);
         
-        console.log('캔버스 그리기 완료');
+        // 상품명
+        ctx.font = '11px Arial';
+        ctx.fillText('상품: ' + (coupon.prize || '쿠폰'), 8, 40);
         
-        // 이미지 데이터 생성
-        const dataURL = canvas.toDataURL('image/png');
-        console.log('이미지 데이터 생성 완료, 크기:', dataURL.length, 'bytes');
+        // 쿠폰 코드
+        ctx.font = 'bold 11px monospace';
+        ctx.fillText('쿠폰 코드: ' + (coupon.code || 'NO-CODE'), 8, 60);
         
-        // 파일명 생성 (특수문자 제거)
-        const safePrizeName = (coupon.prize || 'coupon').replace(/[^a-zA-Z0-9가-힣]/g, '_');
-        const safeCode = (coupon.code || 'NOCODE').replace(/[^a-zA-Z0-9]/g, '_');
-        const fileName = `🎉쿠폰_${safePrizeName}_${safeCode}.png`;
-        console.log('파일명 생성:', fileName);
+        // 유효기간
+        ctx.font = '10px Arial';
+        ctx.fillText('유효기간: ' + (coupon.expiryDate || '미정'), 8, 80);
+        
+        // 사용법
+        ctx.fillText('사용법: 사용시 쿠폰을 제시해주세요', 8, 100);
         
         // 이미지 다운로드
+        const dataURL = canvas.toDataURL('image/png');
+        const safePrizeName = (coupon.prize || 'coupon').replace(/[^a-zA-Z0-9가-힣]/g, '_');
+        const safeCode = (coupon.code || 'NOCODE').replace(/[^a-zA-Z0-9]/g, '_');
+        const fileName = `쿠폰_${safePrizeName}_${safeCode}.png`;
+        
         const link = document.createElement('a');
         link.download = fileName;
         link.href = dataURL;
-        
-        // 링크를 DOM에 추가하고 클릭 (일부 브라우저에서 필요)
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
         
-        console.log('다운로드 링크 클릭 완료');
-        
-        // 성공 메시지
-        showDownloadMessage('🎉 화려한 쿠폰 이미지가 다운로드되었습니다! 🎉');
-        
-        console.log('=== 쿠폰 이미지 생성 완료 ===');
+        showDownloadMessage('텍스트 쿠폰 이미지가 다운로드되었습니다.');
+        console.log('텍스트 쿠폰 이미지 생성 완료');
         
     } catch (error) {
-        console.error('쿠폰 이미지 생성 중 오류:', error);
-        console.error('오류 스택:', error.stack);
-        throw error; // 상위 함수로 오류 전파
+        console.error('쿠폰 이미지 생성 오류:', error);
+        alert('쿠폰 이미지 생성에 실패했습니다: ' + error.message);
     }
 }
 
-// 별 그리기 함수
-function drawStar(ctx, cx, cy, spikes, outerRadius, innerRadius, color) {
-    let rot = Math.PI / 2 * 3;
-    let x = cx;
-    let y = cy;
-    const step = Math.PI / spikes;
-
-    ctx.beginPath();
-    ctx.moveTo(cx, cy - outerRadius);
-    
-    for (let i = 0; i < spikes; i++) {
-        x = cx + Math.cos(rot) * outerRadius;
-        y = cy + Math.sin(rot) * outerRadius;
-        ctx.lineTo(x, y);
-        rot += step;
-
-        x = cx + Math.cos(rot) * innerRadius;
-        y = cy + Math.sin(rot) * innerRadius;
-        ctx.lineTo(x, y);
-        rot += step;
-    }
-    
-    ctx.lineTo(cx, cy - outerRadius);
-    ctx.closePath();
-    ctx.fillStyle = color;
-    ctx.fill();
-    
-    // 별에 반짝이는 효과
-    ctx.strokeStyle = '#FFFFFF';
-    ctx.lineWidth = 2;
-    ctx.stroke();
-}
+// 모바일 최적화를 위해 복잡한 그래픽 함수 제거
 
 // 모든 쿠폰 다운로드
 function downloadAllCoupons() {
