@@ -15,9 +15,9 @@ const prizes = [
     { name: '30% 할인', probability: 5, type: 'discount' },
     { name: '상품권 3만원', probability: 5, type: 'voucher' },
     { name: '상품권 5만원', probability: 5, type: 'voucher' },
-    { name: '음료수 2잔', probability: 10, type: 'drink' },
-    { name: '커피 한잔', probability: 10, type: 'drink' },
-    { name: '꽝', probability: 40, type: 'fail' }
+    { name: '음료수 1잔', probability: 20, type: 'drink' },
+    { name: '커피 한잔', probability: 20, type: 'drink' },
+    { name: '꽝', probability: 20, type: 'fail' }
 ];
 
 let selectedCardIndex = -1;
@@ -379,35 +379,13 @@ function showCoupon() {
     const expiryDate = getExpiryDate();
     
     couponContainer.innerHTML = `
-        <div class="beautiful-coupon">
-            <div class="coupon-decoration">
-                <div class="star-decoration">⭐</div>
-                <div class="star-decoration">✨</div>
-                <div class="star-decoration">🎉</div>
-                <div class="star-decoration">🎁</div>
-            </div>
-            <div class="coupon-header">
-                <div class="congratulations">🎉 축하합니다! 🎉</div>
-                <div class="coupon-title">${selectedPrize.name} 쿠폰</div>
-            </div>
-            <div class="coupon-code-section">
-                <div class="coupon-code-label">쿠폰 코드</div>
-                <div class="coupon-code">${couponCode}</div>
-            </div>
+        <div class="simple-coupon">
+            <h3>🎉 축하합니다! 쿠폰을 받으셨습니다.</h3>
             <div class="coupon-details">
-                <div class="coupon-info">📅 유효기간: ${expiryDate}</div>
-                <div class="coupon-info">💡 사용법: 사용시 쿠폰을 제시해주세요</div>
-            </div>
-            <div class="coupon-footer">
-                <div class="special-message">🎁 고객님께 드리는 특별한 혜택입니다 🎁</div>
-            </div>
-            <div class="coupon-sparkles">
-                <div class="sparkle">✨</div>
-                <div class="sparkle">⭐</div>
-                <div class="sparkle">💫</div>
-                <div class="sparkle">🌟</div>
-                <div class="sparkle">✨</div>
-                <div class="sparkle">⭐</div>
+                <p><strong>상품:</strong> ${selectedPrize.name}</p>
+                <p><strong>쿠폰 코드:</strong> <span class="coupon-code">${couponCode}</span></p>
+                <p><strong>유효기간:</strong> ${expiryDate}</p>
+                <p><strong>사용법:</strong> 사용시 쿠폰을 제시해주세요</p>
             </div>
         </div>
     `;
@@ -443,10 +421,10 @@ function saveCoupon() {
     
     try {
         const couponCodeElement = document.querySelector('.coupon-code');
-        const couponInfoElements = document.querySelectorAll('.coupon-info');
+        const couponDetailElements = document.querySelectorAll('.coupon-details p');
         
         console.log('쿠폰 코드 요소:', couponCodeElement);
-        console.log('쿠폰 정보 요소들:', couponInfoElements);
+        console.log('쿠폰 정보 요소들:', couponDetailElements);
         console.log('선택된 상품:', selectedPrize);
         
         // 더 상세한 오류 체크
@@ -458,13 +436,13 @@ function saveCoupon() {
             throw new Error('선택된 상품 정보가 없습니다. (selectedPrize 변수 없음)');
         }
         
-        if (couponInfoElements.length < 2) {
-            throw new Error('쿠폰 정보가 부족합니다. (.coupon-info 요소가 ' + couponInfoElements.length + '개만 발견됨)');
+        if (couponDetailElements.length < 4) {
+            throw new Error('쿠폰 정보가 부족합니다. (.coupon-details p 요소가 ' + couponDetailElements.length + '개만 발견됨)');
         }
         
         const couponCode = couponCodeElement.textContent.trim();
-        const expiryText = couponInfoElements[0].textContent.replace('유효기간: ', '').trim();
-        const usageText = couponInfoElements[1].textContent.replace('사용법: ', '').trim();
+        const expiryText = couponDetailElements[2].textContent.replace('유효기간: ', '').trim();
+        const usageText = couponDetailElements[3].textContent.replace('사용법: ', '').trim();
         
         console.log('추출된 데이터:');
         console.log('- 쿠폰 코드:', couponCode);

@@ -600,56 +600,18 @@ body {
 /* Responsive Design for Premium Effects */
 @media (max-width: 768px) {
     .outer-circle {
-        width: 300px;
-        height: 300px;
+        width: 280px;
+        height: 280px;
     }
     
     .middle-circle {
-        width: 220px;
-        height: 220px;
+        width: 200px;
+        height: 200px;
     }
     
     .inner-circle {
-        width: 150px;
-        height: 150px;
-    }
-    
-    .shuffle-card-single {
-        width: 160px;
-        height: 224px;
-    }
-    
-    .star {
-        font-size: 1.2rem;
-        transform: rotate(var(--rotation, 0deg)) translateX(120px) !important;
-    }
-    
-    .shuffle-status {
-        font-size: 1.2rem;
-        bottom: 30px;
-        padding: 8px 16px;
-    }
-    
-    .selected-prize {
-        font-size: 1.1rem;
-        padding: 8px 16px;
-    }
-}
-
-@media (max-width: 480px) {
-    .outer-circle {
-        width: 250px;
-        height: 250px;
-    }
-    
-    .middle-circle {
-        width: 180px;
-        height: 180px;
-    }
-    
-    .inner-circle {
-        width: 120px;
-        height: 120px;
+        width: 130px;
+        height: 130px;
     }
     
     .shuffle-card-single {
@@ -659,7 +621,78 @@ body {
     
     .star {
         font-size: 1rem;
-        transform: rotate(var(--rotation, 0deg)) translateX(90px) !important;
+        transform: rotate(var(--rotation, 0deg)) translateX(100px) !important;
+    }
+    
+    .shuffle-status {
+        font-size: 1.1rem;
+        bottom: 15px;
+        padding: 6px 12px;
+    }
+    
+    .selected-prize {
+        font-size: 1rem;
+        padding: 6px 12px;
+    }
+    
+    /* 추첨 화면 전체 여백 줄이기 */
+    .premium-shuffle-container {
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+    
+    .single-card-container {
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .outer-circle {
+        width: 220px;
+        height: 220px;
+    }
+    
+    .middle-circle {
+        width: 160px;
+        height: 160px;
+    }
+    
+    .inner-circle {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .shuffle-card-single {
+        width: 120px;
+        height: 168px;
+    }
+    
+    .star {
+        font-size: 0.8rem;
+        transform: rotate(var(--rotation, 0deg)) translateX(80px) !important;
+    }
+    
+    .shuffle-status {
+        font-size: 1rem;
+        bottom: 10px;
+        padding: 4px 8px;
+    }
+    
+    .selected-prize {
+        font-size: 0.9rem;
+        padding: 4px 8px;
+    }
+    
+    /* 작은 모바일에서 더 컴팩트하게 */
+    .premium-shuffle-container {
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+    
+    .single-card-container {
+        margin-top: 10px;
+        margin-bottom: 10px;
     }
 }
 
@@ -667,7 +700,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 50px;
+    margin-top: 30px;
     position: relative;
     z-index: 1;
 }
@@ -1395,18 +1428,15 @@ body {
 }
 
 /* 새로운 화려한 쿠폰 디자인 */
-.beautiful-coupon {
-    position: relative;
-    background: linear-gradient(135deg, #FF6B35, #F7931E, #FFD23F, #FF4757);
-    border-radius: 20px;
-    padding: 25px;
-    margin: 0;
-    box-shadow: 
-        0 10px 30px rgba(0,0,0,0.2),
-        inset 0 1px 0 rgba(255,255,255,0.3);
-    overflow: hidden;
-    animation: couponGlow 3s ease-in-out infinite alternate;
-    text-align: center;
+.simple-coupon {
+    background: #ffffff;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 400px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    text-align: left;
 }
 
 .beautiful-coupon::before {
@@ -1819,11 +1849,17 @@ body {
 @media (max-width: 768px) {
     .main-title {
         font-size: 2rem;
+        margin-bottom: 15px;
     }
     
     .scene-title {
         font-size: 1.5rem;
-        padding: 12px 20px;
+        padding: 8px 15px;
+        margin-bottom: 10px;
+    }
+    
+    .scene {
+        padding: 10px;
     }
     
     .card-grid {
@@ -1837,9 +1873,9 @@ body {
     }
     
     .big-result-display {
-        min-height: 50vh;
-        padding: 30px 15px;
-        max-width: 90%;
+        min-height: 40vh;
+        padding: 20px 10px;
+        max-width: 95%;
     }
     
     .big-result-title {
@@ -1873,6 +1909,10 @@ body {
         height: 260px;
     }
     
+    .simple-card-container {
+        margin-top: 15px;
+    }
+    
     .shuffling-card {
         width: 170px;
         height: 128px;
@@ -1894,11 +1934,12 @@ body {
 
     
     #scene3 .scene-title {
-        font-size: 2.2rem;
+        font-size: 1.8rem;
+        margin-bottom: 10px;
     }
     
     .container {
-        padding: 15px;
+        padding: 10px;
     }
     
     .logo {
@@ -1930,11 +1971,17 @@ body {
 @media (max-width: 480px) {
     .main-title {
         font-size: 1.8rem;
+        margin-bottom: 10px;
     }
     
     .scene-title {
         font-size: 1.3rem;
-        padding: 10px 15px;
+        padding: 6px 12px;
+        margin-bottom: 8px;
+    }
+    
+    .scene {
+        padding: 5px;
     }
     
     .card-grid {
@@ -1947,9 +1994,9 @@ body {
     }
     
     .big-result-display {
-        min-height: 45vh;
-        padding: 20px 10px;
-        max-width: 95%;
+        min-height: 35vh;
+        padding: 15px 8px;
+        max-width: 98%;
     }
     
     .big-result-title {
@@ -1984,6 +2031,10 @@ body {
         font-size: 1rem;
     }
     
+    .simple-card-container {
+        margin-top: 10px;
+    }
+    
     .shuffling-card {
         width: 150px;
         height: 113px;
@@ -2005,12 +2056,13 @@ body {
 
     
     #scene3 .scene-title {
-        font-size: 1.8rem;
+        font-size: 1.5rem;
+        margin-bottom: 8px;
     }
     
     .coupon-container {
-        padding: 20px;
-        margin: 20px 10px;
+        padding: 10px;
+        margin: 10px 5px;
     }
 }
 
@@ -2354,5 +2406,100 @@ body {
     
     .download-text {
         font-size: 12px;
+    }
+}
+
+/* 모바일 친화적인 간단한 쿠폰 스타일 */
+.simple-coupon {
+    background: #ffffff;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 400px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    text-align: left;
+    font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.simple-coupon h3 {
+    color: #333;
+    margin-bottom: 15px;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.simple-coupon .coupon-details {
+    line-height: 1.8;
+}
+
+.simple-coupon .coupon-details p {
+    margin: 8px 0;
+    color: #555;
+    font-size: 1rem;
+    word-break: keep-all;
+}
+
+.simple-coupon .coupon-details strong {
+    color: #333;
+    font-weight: 600;
+}
+
+.simple-coupon .coupon-code {
+    background: #f8f9fa;
+    padding: 8px 12px;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    color: #495057;
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+    display: inline-block;
+    margin-left: 5px;
+}
+
+/* 모바일 대응 */
+@media (max-width: 768px) {
+    .simple-coupon {
+        margin: 10px;
+        padding: 15px;
+        max-width: none;
+    }
+    
+    .simple-coupon h3 {
+        font-size: 1.1rem;
+    }
+    
+    .simple-coupon .coupon-details p {
+        font-size: 0.9rem;
+    }
+    
+    .simple-coupon .coupon-code {
+        font-size: 1rem;
+        padding: 6px 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .simple-coupon {
+        margin: 5px;
+        padding: 12px;
+    }
+    
+    .simple-coupon h3 {
+        font-size: 1rem;
+    }
+    
+    .simple-coupon .coupon-details p {
+        font-size: 0.85rem;
+        line-height: 1.6;
+    }
+    
+    .simple-coupon .coupon-code {
+        font-size: 0.9rem;
+        padding: 5px 8px;
+        letter-spacing: 0.5px;
     }
 } 
