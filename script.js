@@ -379,18 +379,13 @@ function showCoupon() {
     const expiryDate = getExpiryDate();
     
     couponContainer.innerHTML = `
-        <div class="simple-mobile-coupon">
-            <div class="mobile-coupon-header">
-                <div class="mobile-congratulations">🎉 축하합니다! 🎉</div>
-                <div class="mobile-coupon-title">${selectedPrize.name} 쿠폰</div>
-            </div>
-            <div class="mobile-coupon-code-section">
-                <div class="mobile-coupon-code-label">쿠폰 코드</div>
-                <div class="coupon-code">${couponCode}</div>
-            </div>
-            <div class="mobile-coupon-info">
-                <div class="coupon-info">📅 유효기간: ${expiryDate}</div>
-                <div class="coupon-info">💡 사용법: 사용시 쿠폰을 제시해주세요</div>
+        <div class="text-coupon">
+            <h3>축하합니다! 쿠폰을 받으셨습니다.</h3>
+            <div class="coupon-details">
+                <p>상품: ${selectedPrize.name}</p>
+                <p>쿠폰 코드: <span class="coupon-code">${couponCode}</span></p>
+                <p>유효기간: ${expiryDate}</p>
+                <p>사용법: 사용시 쿠폰을 제시해주세요</p>
             </div>
         </div>
     `;
@@ -426,7 +421,7 @@ function saveCoupon() {
     
     try {
         const couponCodeElement = document.querySelector('.coupon-code');
-        const couponInfoElements = document.querySelectorAll('.coupon-info');
+        const couponInfoElements = document.querySelectorAll('.coupon-details p');
         
         console.log('쿠폰 코드 요소:', couponCodeElement);
         console.log('쿠폰 정보 요소들:', couponInfoElements);
@@ -441,13 +436,13 @@ function saveCoupon() {
             throw new Error('선택된 상품 정보가 없습니다. (selectedPrize 변수 없음)');
         }
         
-        if (couponInfoElements.length < 2) {
-            throw new Error('쿠폰 정보가 부족합니다. (.coupon-info 요소가 ' + couponInfoElements.length + '개만 발견됨)');
+        if (couponInfoElements.length < 4) {
+            throw new Error('쿠폰 정보가 부족합니다. (.coupon-details p 요소가 ' + couponInfoElements.length + '개만 발견됨)');
         }
         
         const couponCode = couponCodeElement.textContent.trim();
-        const expiryText = couponInfoElements[0].textContent.replace('유효기간: ', '').trim();
-        const usageText = couponInfoElements[1].textContent.replace('사용법: ', '').trim();
+        const expiryText = couponInfoElements[2].textContent.replace('유효기간: ', '').trim();
+        const usageText = couponInfoElements[3].textContent.replace('사용법: ', '').trim();
         
         console.log('추출된 데이터:');
         console.log('- 쿠폰 코드:', couponCode);
@@ -746,124 +741,73 @@ function downloadCouponImage(couponIndex) {
     createSimpleCouponImage(coupon);
 }
 
-// 간단한 모바일 친화적 쿠폰 이미지 생성
+// 극도로 간단한 텍스트만 있는 쿠폰 이미지 생성
 function createSimpleCouponImage(coupon) {
-    console.log('=== 간단한 모바일 쿠폰 이미지 생성 시작 ===');
-    console.log('입력된 쿠폰 데이터:', coupon);
+    console.log('=== 텍스트 전용 쿠폰 이미지 생성 시작 ===');
     
     try {
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
         
         if (!ctx) {
-            throw new Error('Canvas 2D 컨텍스트를 생성할 수 없습니다.');
+            throw new Error('Canvas를 생성할 수 없습니다.');
         }
         
-        // 캔버스 크기 설정 (모바일 친화적)
-        canvas.width = 320;
-        canvas.height = 200;
-        console.log('캔버스 크기 설정 완료:', canvas.width, 'x', canvas.height);
+        // 캔버스 크기 (더 작게)
+        canvas.width = 280;
+        canvas.height = 120;
         
-        // 간단한 그라데이션 배경
-        const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-        gradient.addColorStop(0, '#FF6B35');
-        gradient.addColorStop(1, '#F7931E');
-        
-        ctx.fillStyle = gradient;
+        // 흰색 배경
+        ctx.fillStyle = '#ffffff';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         
-        // 흰색 내부 박스
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
-        ctx.fillRect(10, 10, canvas.width - 20, canvas.height - 20);
-        
-        // 간단한 테두리
-        ctx.strokeStyle = '#FFD23F';
-        ctx.lineWidth = 3;
-        ctx.strokeRect(10, 10, canvas.width - 20, canvas.height - 20);
+        // 얇은 검은색 테두리
+        ctx.strokeStyle = '#000000';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(2, 2, canvas.width - 4, canvas.height - 4);
         
         // 텍스트 설정
-        ctx.textAlign = 'center';
+        ctx.fillStyle = '#000000';
+        ctx.textAlign = 'left';
         
-        // 축하 메시지
-        ctx.font = 'bold 14px Arial';
-        ctx.fillStyle = '#FF4757';
-        ctx.fillText('🎉 축하합니다! 🎉', canvas.width / 2, 35);
+        // 제목 (더 작게)
+        ctx.font = '12px Arial';
+        ctx.fillText('축하합니다! 쿠폰을 받으셨습니다.', 8, 20);
         
-        // 제목
-        ctx.font = 'bold 18px Arial';
-        ctx.fillStyle = '#FF6B35';
-        const titleText = (coupon.prize || '쿠폰') + ' 쿠폰';
-        ctx.fillText(titleText, canvas.width / 2, 60);
+        // 상품명
+        ctx.font = '11px Arial';
+        ctx.fillText('상품: ' + (coupon.prize || '쿠폰'), 8, 40);
         
-        console.log('제목 텍스트 그리기 완료:', titleText);
-        
-        // 쿠폰 코드 박스
-        ctx.fillStyle = '#FFFFFF';
-        ctx.fillRect(40, 75, canvas.width - 80, 30);
-        
-        // 코드 박스 테두리
-        ctx.strokeStyle = '#FF6B35';
-        ctx.lineWidth = 2;
-        ctx.strokeRect(40, 75, canvas.width - 80, 30);
-        
-        // 쿠폰 코드 텍스트
-        ctx.font = 'bold 16px monospace';
-        ctx.fillStyle = '#FF4757';
-        const codeText = coupon.code || 'NO-CODE';
-        ctx.fillText(codeText, canvas.width / 2, 95);
-        
-        console.log('쿠폰 코드 그리기 완료:', codeText);
+        // 쿠폰 코드
+        ctx.font = 'bold 11px monospace';
+        ctx.fillText('쿠폰 코드: ' + (coupon.code || 'NO-CODE'), 8, 60);
         
         // 유효기간
-        ctx.font = '12px Arial';
-        ctx.fillStyle = '#F7931E';
-        const expiryText = '📅 유효기간: ' + (coupon.expiryDate || '미정');
-        ctx.fillText(expiryText, canvas.width / 2, 125);
+        ctx.font = '10px Arial';
+        ctx.fillText('유효기간: ' + (coupon.expiryDate || '미정'), 8, 80);
         
         // 사용법
-        ctx.font = '11px Arial';
-        ctx.fillStyle = '#F7931E';
-        const usageText = coupon.usage || '쿠폰을 제시해주세요';
-        ctx.fillText('💡 ' + usageText, canvas.width / 2, 145);
+        ctx.fillText('사용법: 사용시 쿠폰을 제시해주세요', 8, 100);
         
-        // 감사 메시지
-        ctx.font = '10px Arial';
-        ctx.fillStyle = '#FF6B35';
-        ctx.fillText('이용해 주셔서 감사합니다! ❤️', canvas.width / 2, 170);
-        
-        console.log('캔버스 그리기 완료');
-        
-        // 이미지 데이터 생성
+        // 이미지 다운로드
         const dataURL = canvas.toDataURL('image/png');
-        console.log('이미지 데이터 생성 완료, 크기:', dataURL.length, 'bytes');
-        
-        // 파일명 생성 (특수문자 제거)
         const safePrizeName = (coupon.prize || 'coupon').replace(/[^a-zA-Z0-9가-힣]/g, '_');
         const safeCode = (coupon.code || 'NOCODE').replace(/[^a-zA-Z0-9]/g, '_');
         const fileName = `쿠폰_${safePrizeName}_${safeCode}.png`;
-        console.log('파일명 생성:', fileName);
         
-        // 이미지 다운로드
         const link = document.createElement('a');
         link.download = fileName;
         link.href = dataURL;
-        
-        // 링크를 DOM에 추가하고 클릭 (일부 브라우저에서 필요)
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
         
-        console.log('다운로드 링크 클릭 완료');
-        
-        // 성공 메시지
-        showDownloadMessage('📱 간단한 쿠폰 이미지가 다운로드되었습니다!');
-        
-        console.log('=== 쿠폰 이미지 생성 완료 ===');
+        showDownloadMessage('텍스트 쿠폰 이미지가 다운로드되었습니다.');
+        console.log('텍스트 쿠폰 이미지 생성 완료');
         
     } catch (error) {
-        console.error('쿠폰 이미지 생성 중 오류:', error);
-        console.error('오류 스택:', error.stack);
-        throw error; // 상위 함수로 오류 전파
+        console.error('쿠폰 이미지 생성 오류:', error);
+        alert('쿠폰 이미지 생성에 실패했습니다: ' + error.message);
     }
 }
 
