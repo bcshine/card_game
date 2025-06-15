@@ -380,7 +380,7 @@ function showCoupon() {
     
     couponContainer.innerHTML = `
         <div class="simple-coupon">
-            <h3>🎉 축하합니다! 쿠폰을 받으셨습니다.</h3>
+            <h3>🎉 축하합니다! 쿠폰을 받으세요</h3>
             <div class="coupon-details">
                 <p><strong>상품:</strong> ${selectedPrize.name}</p>
                 <p><strong>쿠폰 코드:</strong> <span class="coupon-code">${couponCode}</span></p>
@@ -741,9 +741,10 @@ function downloadCouponImage(couponIndex) {
     createSimpleCouponImage(coupon);
 }
 
-// 극도로 간단한 텍스트만 있는 쿠폰 이미지 생성
+// 참고 이미지와 동일한 쿠폰 이미지 생성
 function createSimpleCouponImage(coupon) {
-    console.log('=== 텍스트 전용 쿠폰 이미지 생성 시작 ===');
+    console.log('=== 텍스트만 쿠폰 생성 시작 ===');
+    console.log('전달받은 쿠폰 데이터:', coupon);
     
     try {
         const canvas = document.createElement('canvas');
@@ -753,41 +754,124 @@ function createSimpleCouponImage(coupon) {
             throw new Error('Canvas를 생성할 수 없습니다.');
         }
         
-        // 캔버스 크기 (더 작게)
-        canvas.width = 280;
-        canvas.height = 120;
+        // 캔버스 크기
+        canvas.width = 500;
+        canvas.height = 300;
         
-        // 흰색 배경
-        ctx.fillStyle = '#ffffff';
+        // 청록색 외부 배경
+        ctx.fillStyle = '#4ECDC4';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         
-        // 얇은 검은색 테두리
-        ctx.strokeStyle = '#000000';
-        ctx.lineWidth = 1;
-        ctx.strokeRect(2, 2, canvas.width - 4, canvas.height - 4);
+        // 흰색 내부 배경
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(20, 20, canvas.width - 40, canvas.height - 40);
         
-        // 텍스트 설정
+        // 점선 테두리 (쿠폰 스타일)
+        ctx.strokeStyle = '#FF69B4';
+        ctx.lineWidth = 2;
+        ctx.setLineDash([5, 5]); // 점선 패턴
+        ctx.strokeRect(20, 20, canvas.width - 40, canvas.height - 40);
+        ctx.setLineDash([]); // 점선 해제
+        
+        // 상품명 추출
+        let couponText = '테스트 쿠폰';
+        if (coupon && coupon.prize) {
+            couponText = coupon.prize + ' 쿠폰';
+            console.log('쿠폰에서 상품명 추출:', coupon.prize);
+        }
+        console.log('최종 텍스트:', couponText);
+        
+        // 제목
+        ctx.fillStyle = '#FF69B4';
+        ctx.font = 'bold 16px Arial';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'alphabetic';
+        ctx.fillText('🎉 축하합니다! 🎉', 250, 55);
+        
+        // 상품명 텍스트 (확실히 보이도록)
         ctx.fillStyle = '#000000';
-        ctx.textAlign = 'left';
-        
-        // 제목 (더 작게)
-        ctx.font = '12px Arial';
-        ctx.fillText('축하합니다! 쿠폰을 받으셨습니다.', 8, 20);
-        
-        // 상품명
-        ctx.font = '11px Arial';
-        ctx.fillText('상품: ' + (coupon.prize || '쿠폰'), 8, 40);
+        ctx.font = 'bold 24px Arial';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'alphabetic';
+        ctx.fillText(couponText, 250, 85);
         
         // 쿠폰 코드
-        ctx.font = 'bold 11px monospace';
-        ctx.fillText('쿠폰 코드: ' + (coupon.code || 'NO-CODE'), 8, 60);
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillRect(60, 110, 380, 30);
+        ctx.strokeStyle = '#FF69B4';
+        ctx.lineWidth = 2;
+        ctx.strokeRect(60, 110, 380, 30);
+        
+        ctx.fillStyle = '#000000';
+        ctx.font = 'bold 18px Arial';
+        ctx.fillText(coupon.code || 'NO-CODE', 250, 130);
         
         // 유효기간
-        ctx.font = '10px Arial';
-        ctx.fillText('유효기간: ' + (coupon.expiryDate || '미정'), 8, 80);
+        ctx.fillStyle = '#0077B6';
+        ctx.font = '14px Arial';
+        ctx.fillText('🛍️ 유효기간: 1개월', 250, 165);
         
         // 사용법
-        ctx.fillText('사용법: 사용시 쿠폰을 제시해주세요', 8, 100);
+        ctx.fillStyle = '#4ECDC4';
+        ctx.font = '13px Arial';
+        ctx.fillText('사용시 쿠폰을 제시해주세요', 250, 185);
+        
+        // 감사 메시지
+        ctx.fillStyle = '#95A5A6';
+        ctx.font = '12px Arial';
+        ctx.fillText('이용해주셔서 감사합니다', 250, 205);
+        
+        // QR 코드 영역 (우하단)
+        const qrSize = 60;
+        const qrX = canvas.width - qrSize - 30;
+        const qrY = canvas.height - qrSize - 30;
+        
+        // QR 코드 배경 (흰색)
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillRect(qrX, qrY, qrSize, qrSize);
+        
+        // QR 코드 테두리
+        ctx.strokeStyle = '#000000';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(qrX, qrY, qrSize, qrSize);
+        
+        // 간단한 QR 코드 패턴 생성
+        ctx.fillStyle = '#000000';
+        const cellSize = 3;
+        for (let i = 0; i < qrSize / cellSize; i++) {
+            for (let j = 0; j < qrSize / cellSize; j++) {
+                // 의사 랜덤 패턴 (쿠폰 코드 기반)
+                const hash = (coupon.code || 'DEFAULT').charCodeAt((i + j) % (coupon.code || 'DEFAULT').length);
+                if ((hash + i * j) % 3 === 0) {
+                    ctx.fillRect(qrX + i * cellSize, qrY + j * cellSize, cellSize, cellSize);
+                }
+            }
+        }
+        
+        // QR 코드 모서리 마커 (전문적인 느낌)
+        const markerSize = 12;
+        // 좌상단 마커
+        ctx.fillRect(qrX + 2, qrY + 2, markerSize, markerSize);
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillRect(qrX + 5, qrY + 5, markerSize - 6, markerSize - 6);
+        
+        // 우상단 마커
+        ctx.fillStyle = '#000000';
+        ctx.fillRect(qrX + qrSize - markerSize - 2, qrY + 2, markerSize, markerSize);
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillRect(qrX + qrSize - markerSize + 1, qrY + 5, markerSize - 6, markerSize - 6);
+        
+        // 좌하단 마커
+        ctx.fillStyle = '#000000';
+        ctx.fillRect(qrX + 2, qrY + qrSize - markerSize - 2, markerSize, markerSize);
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillRect(qrX + 5, qrY + qrSize - markerSize + 1, markerSize - 6, markerSize - 6);
+        
+        // QR 코드 라벨
+        ctx.fillStyle = '#666666';
+        ctx.font = '8px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('QR', qrX + qrSize/2, qrY + qrSize + 12);
         
         // 이미지 다운로드
         const dataURL = canvas.toDataURL('image/png');
@@ -802,8 +886,8 @@ function createSimpleCouponImage(coupon) {
         link.click();
         document.body.removeChild(link);
         
-        showDownloadMessage('텍스트 쿠폰 이미지가 다운로드되었습니다.');
-        console.log('텍스트 쿠폰 이미지 생성 완료');
+        showDownloadMessage('쿠폰 이미지가 다운로드되었습니다! 🎉');
+        console.log('텍스트만 쿠폰 생성 완료');
         
     } catch (error) {
         console.error('쿠폰 이미지 생성 오류:', error);
