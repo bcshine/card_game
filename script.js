@@ -379,35 +379,18 @@ function showCoupon() {
     const expiryDate = getExpiryDate();
     
     couponContainer.innerHTML = `
-        <div class="beautiful-coupon">
-            <div class="coupon-decoration">
-                <div class="star-decoration">⭐</div>
-                <div class="star-decoration">✨</div>
-                <div class="star-decoration">🎉</div>
-                <div class="star-decoration">🎁</div>
+        <div class="simple-mobile-coupon">
+            <div class="mobile-coupon-header">
+                <div class="mobile-congratulations">🎉 축하합니다! 🎉</div>
+                <div class="mobile-coupon-title">${selectedPrize.name} 쿠폰</div>
             </div>
-            <div class="coupon-header">
-                <div class="congratulations">🎉 축하합니다! 🎉</div>
-                <div class="coupon-title">${selectedPrize.name} 쿠폰</div>
-            </div>
-            <div class="coupon-code-section">
-                <div class="coupon-code-label">쿠폰 코드</div>
+            <div class="mobile-coupon-code-section">
+                <div class="mobile-coupon-code-label">쿠폰 코드</div>
                 <div class="coupon-code">${couponCode}</div>
             </div>
-            <div class="coupon-details">
+            <div class="mobile-coupon-info">
                 <div class="coupon-info">📅 유효기간: ${expiryDate}</div>
                 <div class="coupon-info">💡 사용법: 사용시 쿠폰을 제시해주세요</div>
-            </div>
-            <div class="coupon-footer">
-                <div class="special-message">🎁 고객님께 드리는 특별한 혜택입니다 🎁</div>
-            </div>
-            <div class="coupon-sparkles">
-                <div class="sparkle">✨</div>
-                <div class="sparkle">⭐</div>
-                <div class="sparkle">💫</div>
-                <div class="sparkle">🌟</div>
-                <div class="sparkle">✨</div>
-                <div class="sparkle">⭐</div>
             </div>
         </div>
     `;
@@ -763,9 +746,9 @@ function downloadCouponImage(couponIndex) {
     createSimpleCouponImage(coupon);
 }
 
-// 기쁘고 즐거운 쿠폰 이미지 생성
+// 간단한 모바일 친화적 쿠폰 이미지 생성
 function createSimpleCouponImage(coupon) {
-    console.log('=== 쿠폰 이미지 생성 시작 ===');
+    console.log('=== 간단한 모바일 쿠폰 이미지 생성 시작 ===');
     console.log('입력된 쿠폰 데이터:', coupon);
     
     try {
@@ -776,110 +759,77 @@ function createSimpleCouponImage(coupon) {
             throw new Error('Canvas 2D 컨텍스트를 생성할 수 없습니다.');
         }
         
-        // 캔버스 크기 설정 (더 크게)
-        canvas.width = 500;
-        canvas.height = 280;
+        // 캔버스 크기 설정 (모바일 친화적)
+        canvas.width = 320;
+        canvas.height = 200;
         console.log('캔버스 크기 설정 완료:', canvas.width, 'x', canvas.height);
         
-        // 화려한 그라데이션 배경
+        // 간단한 그라데이션 배경
         const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-        gradient.addColorStop(0, '#FF6B6B');    // 밝은 빨강
-        gradient.addColorStop(0.3, '#4ECDC4');  // 청록색
-        gradient.addColorStop(0.6, '#45B7D1');  // 하늘색
-        gradient.addColorStop(1, '#96CEB4');    // 민트색
+        gradient.addColorStop(0, '#FF6B35');
+        gradient.addColorStop(1, '#F7931E');
         
         ctx.fillStyle = gradient;
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         
-        // 반투명 흰색 오버레이 (가독성 향상)
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.85)';
-        ctx.fillRect(15, 15, canvas.width - 30, canvas.height - 30);
+        // 흰색 내부 박스
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
+        ctx.fillRect(10, 10, canvas.width - 20, canvas.height - 20);
         
-        // 화려한 테두리 (무지개색)
-        const borderColors = ['#FF6B6B', '#FFE66D', '#4ECDC4', '#45B7D1', '#A8E6CF', '#FF8B94'];
-        for (let i = 0; i < 6; i++) {
-            ctx.strokeStyle = borderColors[i];
-            ctx.lineWidth = 3;
-            ctx.strokeRect(15 + i, 15 + i, canvas.width - 30 - (i * 2), canvas.height - 30 - (i * 2));
-        }
-        
-        // 장식용 별 그리기
-        drawStar(ctx, 60, 60, 5, 15, 8, '#FFD700');
-        drawStar(ctx, canvas.width - 60, 60, 5, 12, 6, '#FF69B4');
-        drawStar(ctx, 60, canvas.height - 60, 5, 10, 5, '#00CED1');
-        drawStar(ctx, canvas.width - 60, canvas.height - 60, 5, 13, 7, '#32CD32');
+        // 간단한 테두리
+        ctx.strokeStyle = '#FFD23F';
+        ctx.lineWidth = 3;
+        ctx.strokeRect(10, 10, canvas.width - 20, canvas.height - 20);
         
         // 텍스트 설정
         ctx.textAlign = 'center';
         
         // 축하 메시지
-        ctx.font = 'bold 16px Arial';
-        ctx.fillStyle = '#FF1493';
-        ctx.fillText('🎉 축하합니다! 🎉', canvas.width / 2, 45);
+        ctx.font = 'bold 14px Arial';
+        ctx.fillStyle = '#FF4757';
+        ctx.fillText('🎉 축하합니다! 🎉', canvas.width / 2, 35);
         
-        // 제목 (더 크고 화려하게)
-        ctx.font = 'bold 32px Arial';
-        const titleGradient = ctx.createLinearGradient(0, 60, canvas.width, 60);
-        titleGradient.addColorStop(0, '#FF6B6B');
-        titleGradient.addColorStop(0.5, '#4ECDC4');
-        titleGradient.addColorStop(1, '#45B7D1');
-        ctx.fillStyle = titleGradient;
-        
+        // 제목
+        ctx.font = 'bold 18px Arial';
+        ctx.fillStyle = '#FF6B35';
         const titleText = (coupon.prize || '쿠폰') + ' 쿠폰';
-        ctx.fillText(titleText, canvas.width / 2, 80);
-        
-        // 제목 그림자 효과
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
-        ctx.fillText(titleText, canvas.width / 2 + 2, 82);
+        ctx.fillText(titleText, canvas.width / 2, 60);
         
         console.log('제목 텍스트 그리기 완료:', titleText);
         
-        // 쿠폰 코드 박스 (화려한 디자인)
-        const codeBoxGradient = ctx.createLinearGradient(0, 110, canvas.width, 150);
-        codeBoxGradient.addColorStop(0, '#FFE66D');
-        codeBoxGradient.addColorStop(1, '#FF8B94');
-        
-        ctx.fillStyle = codeBoxGradient;
-        ctx.fillRect(80, 110, canvas.width - 160, 40);
+        // 쿠폰 코드 박스
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillRect(40, 75, canvas.width - 80, 30);
         
         // 코드 박스 테두리
-        ctx.strokeStyle = '#FF1493';
-        ctx.lineWidth = 3;
-        ctx.strokeRect(80, 110, canvas.width - 160, 40);
+        ctx.strokeStyle = '#FF6B35';
+        ctx.lineWidth = 2;
+        ctx.strokeRect(40, 75, canvas.width - 80, 30);
         
         // 쿠폰 코드 텍스트
-        ctx.font = 'bold 24px monospace';
-        ctx.fillStyle = '#FFFFFF';
+        ctx.font = 'bold 16px monospace';
+        ctx.fillStyle = '#FF4757';
         const codeText = coupon.code || 'NO-CODE';
-        ctx.fillText(codeText, canvas.width / 2, 135);
-        
-        // 코드 텍스트 그림자
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
-        ctx.fillText(codeText, canvas.width / 2 + 1, 136);
+        ctx.fillText(codeText, canvas.width / 2, 95);
         
         console.log('쿠폰 코드 그리기 완료:', codeText);
         
-        // 유효기간 (밝은 색상)
-        ctx.font = 'bold 16px Arial';
-        ctx.fillStyle = '#FF6B6B';
+        // 유효기간
+        ctx.font = '12px Arial';
+        ctx.fillStyle = '#F7931E';
         const expiryText = '📅 유효기간: ' + (coupon.expiryDate || '미정');
-        ctx.fillText(expiryText, canvas.width / 2, 180);
+        ctx.fillText(expiryText, canvas.width / 2, 125);
         
-        // 사용법 (친근한 톤)
-        ctx.font = '14px Arial';
-        ctx.fillStyle = '#4ECDC4';
+        // 사용법
+        ctx.font = '11px Arial';
+        ctx.fillStyle = '#F7931E';
         const usageText = coupon.usage || '쿠폰을 제시해주세요';
-        ctx.fillText('💡 ' + usageText, canvas.width / 2, 205);
-        
-        // 하단 장식 메시지
-        ctx.font = 'bold 14px Arial';
-        ctx.fillStyle = '#45B7D1';
-        ctx.fillText('🎁 고객님께 드리는 특별한 혜택입니다 🎁', canvas.width / 2, 235);
+        ctx.fillText('💡 ' + usageText, canvas.width / 2, 145);
         
         // 감사 메시지
-        ctx.font = '12px Arial';
-        ctx.fillStyle = '#96CEB4';
-        ctx.fillText('이용해 주셔서 감사합니다! ❤️', canvas.width / 2, 255);
+        ctx.font = '10px Arial';
+        ctx.fillStyle = '#FF6B35';
+        ctx.fillText('이용해 주셔서 감사합니다! ❤️', canvas.width / 2, 170);
         
         console.log('캔버스 그리기 완료');
         
@@ -890,7 +840,7 @@ function createSimpleCouponImage(coupon) {
         // 파일명 생성 (특수문자 제거)
         const safePrizeName = (coupon.prize || 'coupon').replace(/[^a-zA-Z0-9가-힣]/g, '_');
         const safeCode = (coupon.code || 'NOCODE').replace(/[^a-zA-Z0-9]/g, '_');
-        const fileName = `🎉쿠폰_${safePrizeName}_${safeCode}.png`;
+        const fileName = `쿠폰_${safePrizeName}_${safeCode}.png`;
         console.log('파일명 생성:', fileName);
         
         // 이미지 다운로드
@@ -906,7 +856,7 @@ function createSimpleCouponImage(coupon) {
         console.log('다운로드 링크 클릭 완료');
         
         // 성공 메시지
-        showDownloadMessage('🎉 화려한 쿠폰 이미지가 다운로드되었습니다! 🎉');
+        showDownloadMessage('📱 간단한 쿠폰 이미지가 다운로드되었습니다!');
         
         console.log('=== 쿠폰 이미지 생성 완료 ===');
         
@@ -917,38 +867,7 @@ function createSimpleCouponImage(coupon) {
     }
 }
 
-// 별 그리기 함수
-function drawStar(ctx, cx, cy, spikes, outerRadius, innerRadius, color) {
-    let rot = Math.PI / 2 * 3;
-    let x = cx;
-    let y = cy;
-    const step = Math.PI / spikes;
-
-    ctx.beginPath();
-    ctx.moveTo(cx, cy - outerRadius);
-    
-    for (let i = 0; i < spikes; i++) {
-        x = cx + Math.cos(rot) * outerRadius;
-        y = cy + Math.sin(rot) * outerRadius;
-        ctx.lineTo(x, y);
-        rot += step;
-
-        x = cx + Math.cos(rot) * innerRadius;
-        y = cy + Math.sin(rot) * innerRadius;
-        ctx.lineTo(x, y);
-        rot += step;
-    }
-    
-    ctx.lineTo(cx, cy - outerRadius);
-    ctx.closePath();
-    ctx.fillStyle = color;
-    ctx.fill();
-    
-    // 별에 반짝이는 효과
-    ctx.strokeStyle = '#FFFFFF';
-    ctx.lineWidth = 2;
-    ctx.stroke();
-}
+// 모바일 최적화를 위해 복잡한 그래픽 함수 제거
 
 // 모든 쿠폰 다운로드
 function downloadAllCoupons() {
